@@ -26,7 +26,7 @@ instance = sys.argv[5]
 f = open("SSH_Access.log", "a")
 sys.stdout = f
 
-#-----------------------------striping b@bigbasket.com---------------------
+#-----------------------------striping @example.com---------------------
 def stripMail(word):
 
    string = word.replace('@example.com',"")
@@ -93,7 +93,7 @@ else:
         getvalue = getattr(issue.fields, nameMap["Severity"])
     except:
         print("{} Ticket ID is wrong or you don't have permission to see it.".format(stime))
-    #---------------fetching amil of assignee ----------
+    #---------------fetching email of assignee ----------
     def ExceljiraRead():
         try:
             #mentioned excel should have only read permision in jenkin server
@@ -121,7 +121,6 @@ else:
                             print('{} Read Only access have given for {} in {} server '.format(stime,jenkinsuser,instance))
                             linuxusername=stripMail(jiramailID)
                             os.system("/var/lib/jenkins/workspace/ProdStaging_ssh-access/myshell.sh %s admin '%s' fe '%s' 2"% (linuxusername,pubkey,instance))
-                            #os.system("aws s3 cp s3://bucketname/%s  /var/lib/jenkins/workspace/ssh-access/%s "% (jenkinsuser,jenkinsuser))
                         else:
                             print('{} Admin access have given for {} in {} server '.format(stime,jenkinsuser,instance))
                             linuxusername=stripMail(jiramailID)
