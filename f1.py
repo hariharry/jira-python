@@ -36,7 +36,7 @@ def stripMail(word):
 def ExcelRead():
     try:
         #mentioned excel should have only read permision in jenkin server
-        os.system("aws s3 cp s3://bucketname/%s  /var/lib/jenkins/workspace/ssh-access/%s "% (jenkinsuser,jenkinsuser))
+        os.system("aws s3 cp s3://bucketname/filename.xlsx  /var/lib/jenkins/workspace/ssh-access/filename.xlsx ")
         df = pd.read_excel('filename.xlsx', sheet_name='sheet name')
         mailID = df['Email address']
 
@@ -97,8 +97,8 @@ else:
     def ExceljiraRead():
         try:
             #mentioned excel should have only read permision in jenkin server
-            os.system("aws s3 cp s3://bucketname/%s  /var/lib/jenkins/workspace/ssh-access/%s "% (jenkinsuser,jenkinsuser))
-            df = pd.read_excel('publickeyssh.xlsx', sheet_name='public-ssh-keys-final')
+            os.system("aws s3 cp s3://bucketname/filename.xlsx  /var/lib/jenkins/workspace/ssh-access/filename.xlsx ")
+            df = pd.read_excel('filename.xlsx', sheet_name='public-ssh-keys')
             jiraDisplayName = df['Employee Name']
             jmailID = df['Email address']
             for i in range(0,len(jmailID)-1):
@@ -112,7 +112,7 @@ else:
 
 
     #Checking the issue type,severity and status of the ticket
-    if((str(ticketType))=="Bug" and (str(getvalue))=="S1" and (str(status))=="Open in Engineering"):
+    if((str(ticketType))=="Bug" and (str(getvalue))=="S1" and (str(status))=="Open"):
                     jiramailID=str(ExceljiraRead())
                     pubkey=str(ExcelRead())
                     if jiramailID==jenkinsuser:
@@ -120,11 +120,11 @@ else:
                         if rw=='RO':
                             print('{} Read Only access have given for {} in {} server '.format(stime,jenkinsuser,instance))
                             linuxusername=stripMail(jiramailID)
-                            os.system("/var/lib/jenkins/workspace/ProdStaging_ssh-access/myshell.sh %s admin '%s' fe '%s' 2"% (linuxusername,pubkey,instance))
+                            os.system("/var/lib/jenkins/workspace/ssh-access/myshell.sh %s admin '%s' fe '%s' 2"% (linuxusername,pubkey,instance))
                         else:
                             print('{} Admin access have given for {} in {} server '.format(stime,jenkinsuser,instance))
                             linuxusername=stripMail(jiramailID)
-                            os.system("/var/lib/jenkins/workspace/ProdStaging_ssh-access/myshell.sh %s bbread '%s' fe '%s' 2"% (linuxusername,pubkey,instance))
+                            os.system("/var/lib/jenkins/workspace/ssh-access/myshell.sh %s read '%s' fe '%s' 2"% (linuxusername,pubkey,instance))
                           
     else:
         print('{} Something went wrong please contact administrator'.format(stime))
